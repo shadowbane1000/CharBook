@@ -1,0 +1,42 @@
+{
+  "template": "3x3Grid",
+  "includeCharacterCells": true, // puts character specific entries at end.
+  "cells":
+  [
+    {
+      "type": "subscreen", // switch to a different screen
+      "screen": "FUMBLE.SCN",
+      "icon": "FUMBLE.PNG",
+      "text": "Fumble"
+    },
+    {
+      "type": "text", // display formatted text
+      "text": "This text is formatted in to the cell. Should be rich..."
+    },
+    {
+      "type": "icon", // display an icon
+      "icon": "BLAH.PNG"
+    },
+    {
+      "type": "number", // number
+      "icon": "BLAH.PNG",
+      "text": "HP",
+      "value": "HP"
+    },      
+    {
+      "type": "textlist", // list of text items
+      "entries":
+      [
+        "sword",
+        "shield"
+      ]
+    },
+    null, // an empty grid cell
+    {
+      "type": "action", // button to perform action
+      "icon": "SHORTRST.PNG",
+      "text": "Short Rest",
+      "action": "short_rest"
+    }
+  ]
+}
