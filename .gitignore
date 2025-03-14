@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+*.ota
+
+# editors & environments
+.vscode
+.pio
+
+# temp working folder
+LilyGo-EPD47
+gui

@@ -1,0 +1,28 @@
+{
+  "name": "Fenril Emberhollow",
+  "rootScreen": "HOME.SCN",
+  "cells": [
+    {
+      "type": "number",
+      "icon": "BLAH.PNG",
+      "text": "Special Points",
+      "value": "SPECIAL"
+    } 
+  ],
+  "values": {
+    "HP" : {
+      "min": 0,
+      "max": 100,
+      "current": 100,
+      "allow_over": true,
+      "allow_under": true,
+      "shareReadMode": "All",
+      "shareWriteMode": "GMOnly"
+    }
+  },
+  "actions": {
+    "short_rest": {
+      "script": "Values.HP.value = Values.HP.max"
+    }
+  }
+}
