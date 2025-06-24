@@ -2,7 +2,6 @@
 #define __BATTERY_MONITOR_H__
 
 #include "module.h"
-#include "widgets/fixedsizewidget.h"
 
 class BatteryMonitor : public Module
 {
@@ -16,6 +15,6 @@ public:
   uint8_t Bars;
 };
 
-extern BatteryMonitor BatteryMonitor;
+extern class BatteryMonitor BatteryMonitor;
 
 #endif // __BATTERY_MONITOR_H__

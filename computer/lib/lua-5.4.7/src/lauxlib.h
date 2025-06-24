@@ -11,10 +11,18 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "luaconf.h"
 #include "lua.h"
 
+typedef void* FS_File;
+extern void FS_Close(FS_File* file);
+extern int FS_Available(FS_File* file);
+extern int FS_Write(FS_File* file, const uint8_t* buffer, size_t size);
+extern int FS_Read(FS_File* file, uint8_t* buffer, size_t size);
+extern int FS_ReadChar(FS_File* file);
+extern bool FS_Open(FS_File* file, const char* filename, const char* mode);
 
 /* global table */
 #define LUA_GNAME	"_G"
@@ -243,7 +251,7 @@ LUALIB_API char *(luaL_buffinitsize) (lua_State *L, luaL_Buffer *B, size_t sz);
 
 
 typedef struct luaL_Stream {
-  FILE *f;  /* stream (NULL for incompletely created streams) */
+  FS_File* f;  /* stream (NULL for incompletely created streams) */
   lua_CFunction closef;  /* to close stream (NULL for closed streams) */
 } luaL_Stream;
 

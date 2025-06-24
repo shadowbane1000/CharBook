@@ -1,0 +1,187 @@
+{
+  "template": "Standard",
+  "tileholder": {
+    "tiles": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 3,
+        "type": "image",
+        "icon": "%<character[\"image\"]>%"
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "width": 2,f
+        "height": 1,
+        "type": "label",
+        "alignment": "center",
+        "justification": "center",
+        "text": "%<character[\"name\"]>%"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "width": 2,
+        "height": 1,
+        "type": "label",
+        "alignment": "center",
+        "justification": "center",
+        "text": "%<character[\"class\"]>%"
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "width": 2,
+        "height": 1,
+        "type": "label",
+        "alignment": "center",
+        "justification": "center",
+        "text": "Level %<character[\"level\"]>%"
+      },
+      { 
+        "type": "tile",
+        "x": 0,
+        "y": 3,
+        "width": 1,
+        "height": 3,
+        "onTouch": "",
+        "children": [
+          {
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "path": "HP.png"
+          },
+          {
+            "type": "label",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "justification": "center",
+            "alignment": "center",
+            "text": "%<ch["hp"]["current"] + ch["hp"]["temporary"]>%",
+            "transparent": true
+          },
+          {
+            "type": "label",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "justification": "center",
+            "alignment": "bottom",
+            "text": "%<ch["hp"]["max"]>%",
+            "transparent": true
+          }
+        ]
+      },
+      { 
+        "type": "tile",
+        "x": 1,
+        "y": 3,
+        "width": 1,
+        "height": 3,
+        "onTouch": "",
+        "children": [
+          {
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "path": "AC.png"
+          },
+          {
+            "type": "label",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "justification": "center",
+            "alignment": "center",
+            "text": "%<ch["ac"]["current"] + ch["ac"]["temporary"]>%",
+            "transparent": true
+          }
+        ]
+      },
+      { 
+        "type": "tile",
+        "x": 2,
+        "y": 3,
+        "width": 1,
+        "height": 3,
+        "onTouch": "",
+        "children": [
+          {
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "path": "RIBBON.png"
+          },
+          {
+            "type": "label",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "justification": "center",
+            "alignment": "center",
+            "text": "%<ch["initiative"]["current"]>%",
+            "transparent": true
+          },
+          {
+            "type": "label",
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 3,
+            "justification": "center",
+            "alignment": "bottom",
+            "text": "%<ch["initiative"]["dice"]>%",
+            "transparent": true
+          }
+        ]
+      },
+      {
+        "x": 0,
+        "y": 6,
+        "width": 1,
+        "height": 3,
+        "type": "image",
+        "onTouch": "Screen:push(\"5E/FUMBLE\")",
+        "path": "FUMBLE.PNG",
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "width": 1,
+        "height": 3,
+        "type": "number",
+        "icon": "RIBBON.PNG",
+        "bc_text": "Initiative",
+        "value": 12,
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "bc_text": "Roll Initiative",
+        "type": "action",
+        "icon": "ROLL.png",
+        "script": "card.Initiative.value = roll('1d20+2')"
+      },
+      {
+        "bc_text": "Long Rest",
+        "type": "action",
+        "icon": "ZZZ.png",
+        "script": "card.HP.value = card.HP.max"
+      }
+    ]
+  }
+}

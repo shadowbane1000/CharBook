@@ -17,8 +17,8 @@
 
 void BatteryMonitor::Initialize()
 {
-  analogReadResolution(12);
-  PerformRead();
+//  analogReadResolution(12);
+//  PerformRead();
 }
 
 void BatteryMonitor::PerformRead()
@@ -49,7 +49,7 @@ Module::UpdateResponse BatteryMonitor::Update()
 {
   if(millis() < nextSampleMillis) return SLEEP_OKAY;
 
-  PerformRead();
+//  PerformRead();
 
   return SLEEP_OKAY;
 }

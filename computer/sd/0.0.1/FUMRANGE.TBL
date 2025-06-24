@@ -1,0 +1,37 @@
+{
+  "Name": "Ranged Weapon Fumble Table (Bows/Thrown)",
+  "TotalWeight": 92,
+  "Table":
+  [
+    { "Weight": 5, "Description": "Unsteady Stance. You must make a successful DC 10 DEX Save or immediately fall prone." },
+    { "Weight": 4, "Description": "Arm Strain. You must make a successful DC 10 CON save or your ranged attacks have disadvantage for 1d4 rounds." },
+    { "Weight": 1, "Description": "Something in your eye. Your ranged attacks only do half damage for the remainder of the encounter." },
+    { "Weight": 5, "Description": "Bowstring Snap/Hand Slip. Your bowstring snaps painfully against your arm, or your thrown weapon slips awkwardly from your grasp. You take 1d4 bludgeoning damage." },
+    { "Weight": 4, "Description": "Overexerted. You become exhausted to level 1 of that condition." },
+    { "Weight": 1, "Description": "Shaky Confidence. You gain disadvantage for your ranged attacks against this opponent for the remainder of the encounter." },
+    { "Weight": 4, "Description": "Distracted Aim. You are stunned for 1 round." },
+    { "Weight": 4, "Description": "They See an Opening! Your target’s allies within 30 feet who can see you gain a d6 inspiration die that can be used during this encounter." },
+    { "Weight": 1, "Description": "Sudden Doubt. You must make a successful DC 10 WIS Save or become frightened of your target for the remainder of the encounter." },
+    { "Weight": 4, "Description": "Dropped Weapon. You drop your bow or primary thrown weapon. It lands 10’ from your location in a random direction." },
+    { "Weight": 4, "Description": "Spilled Ammunition. You fumble and spill your quiver or pouch, scattering 2d6 pieces of ammunition (arrows, bolts, darts, etc.) within 5 feet of you. Retrieving half (rounded down) takes an action." },
+    { "Weight": 4, "Description": "Momentary Confusion. You become incapacitated for 1 round." },
+    { "Weight": 1, "Description": "Lost Footing. You immediately fall prone and lose all movement this round." },
+    { "Weight": 4, "Description": "Hesitation. You drop to last in the initiative order for the combat but do not act again this turn." },
+    { "Weight": 4, "Description": "Sprained Wrist/Finger. You sprain a digit vital for your ranged attack. You suffer disadvantage on ranged attack rolls for the rest of the encounter and take 1d4 piercing or bludgeoning damage (DM's choice based on weapon)." },
+    { "Weight": 1, "Description": "Clear Shot for Them! Allies of the target within 60’ who can see you will prioritize attacking you with their next turn, unless they would suffer an Attack of Opportunity to do so." },
+    { "Weight": 4, "Description": "Exposed Yourself. Your poor shot leaves you open. Your target may use its reaction to move up to its speed towards you or make one ranged attack against you if able." },
+    { "Weight": 4, "Description": "Shaky Aim. You suffer the effects of a bane spell for the remainder of the encounter." },
+    { "Weight": 1, "Description": "Wrong Target! Your shot goes wide. You mistakenly make an attack roll against an ally within 10 feet of your original target (or the ally closest to the path of the shot, DM's choice)." },
+    { "Weight": 4, "Description": "Costly Miss. Your target may reroll all 1s and 2s on the damage roll for its next successful ranged attack vs. you." },
+    { "Weight": 4, "Description": "Telegraphed Shot. You and your allies all suffer disadvantage for your next attack roll." },
+    { "Weight": 4, "Description": "Weapon Stuck/Lost Ammunition. Your arrow/bolt lodges harmlessly in nearby terrain, or your thrown weapon embeds itself. You must make a DC 14 STR check to retrieve it as an action. If it was ammunition, it is destroyed." },
+    { "Weight": 4, "Description": "Overextended/Overdrawn. As a free action, your opponent may immediately make one ranged attack with advantage against you as a reaction if able, or move up to its speed towards you." },
+    { "Weight": 1, "Description": "Weapon Malfunction. Your bowstring snaps or bow cracks (if non-magical, it's broken). A thrown weapon is damaged (non-magical takes -1 to damage rolls permanently). Enchanted weapons/bows must make a DC 8 Save (+1 per magic bonus) or suffer the same fate." },
+    { "Weight": 4, "Description": "Wild Throw/Shot. You lose your grip or proper nocking. Your weapon or ammunition lands 30’ from your location in a random direction. The ammunition is lost." },
+    { "Weight": 4, "Description": "Target Panic. You immediately suffer the effects of the Confusion spell for 1 round." },
+    { "Weight": 1, "Description": "Terrible Luck. Roll twice on this chart and apply both effects to yourself." },
+    { "Weight": 4, "Description": "Ricochet! Your attack ricochets off nearby terrain or armor. Roll your damage as if you had hit your target and apply it to yourself." },
+    { "Weight": 4, "Description": "Painful Ricochet! Your attack ricochets. Apply the maximum damage to yourself as if you had hit your target." },
+    { "Weight": 1, "Description": "NOOO! Your attack ricochets. Apply the maximum critical damage to yourself as if you had hit your target." }
+  ]
+}

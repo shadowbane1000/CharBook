@@ -1,0 +1,61 @@
+{
+  "template": "CHARLIST.TPL",
+  "characters": [
+    {
+      "id": "EMBERHAL"
+    }
+  ],
+  "subscreen_template_cards": {
+    "All": [
+      {
+        "type": "image",
+        "icon": "EMBERHAL.png"
+      },
+      {
+        "type": "subscreen",
+        "screen": "FUMBLE",
+        "icon": "FUMBLE.PNG",
+        "bc_text": "Fumble"
+      },
+      {
+        "bc_text": "Initiative",
+        "icon": "INITIATV.PNG",
+        "type": "number",
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "type": "number",
+        "bc_text": "HP",
+        "min": 0,
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "bc_text": "AC",
+        "type": "number",
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "bc_text": "Roll Initiative",
+        "type": "action",
+        "script": "card.Initiative.value = roll('1d20')"
+      },
+      {
+        "bc_text": "Long Rest",
+        "type": "action",
+        "script": "card.HP.value = card.HP.max"
+      }
+    ],
+    "Cleric": [
+      {
+        "bc_text": "Channel Divinity",
+        "type": "number",
+        "max": 1,
+        "min": 0,
+        "value": 1
+      }
+    ]
+  }
+}

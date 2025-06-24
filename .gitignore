@@ -39,3 +39,10 @@
 # temp working folder
 LilyGo-EPD47
 gui
+
+# temp model files
+*.FCBak
+*.stl
+
+# unison work files
+.unison.*

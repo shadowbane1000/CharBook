@@ -1,0 +1,34 @@
+{
+  "includeCharacterCells": true, // puts character specific entries at end.
+  "template": "Standard",
+  "tileholder": {
+    "tiles":
+    [
+      {
+        "type": "icon",
+        "icon": "FUMBLE.PNG"
+      },
+      {
+        "type": "action",
+        "icon": "ROLL.PNG",
+        "bc_text": "Roll",
+        "action": "roll_fumble"
+      },
+      {
+        "type": "number",
+        "bc_text": "Die Roll",
+        "value": "FumbleRoll"
+      },
+      {
+        "type": "table",
+        "table": "FUMBLE.TAB",
+        "value": "FumbleRoll"
+      }
+    ]
+  },
+  "actions": {
+    "roll_fumble" : {
+      "script": "die = Dice.parse("1d100")\nValues.FumbleRoll.value = die:roll()"
+    }
+  }
+}

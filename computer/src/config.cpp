@@ -6,6 +6,7 @@
 #include "module.h"
 #include "panic.h"
 #include "display.h"
+#include "version.h"
 
 static ArduinoJson::JsonDocument settings;
 

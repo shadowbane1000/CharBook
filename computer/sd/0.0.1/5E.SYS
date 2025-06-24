@@ -1,0 +1,42 @@
+{
+  "characterFields": {
+    "name": {
+      "label": "Name",
+      "dataType": "string",
+      "group": "basicInfo",
+      "sharing": [ "ble", "nfc" ]
+    },
+    "portrait": {
+      "label": "Portrait",
+      "dataType": "image",
+      "resolution": "180x264"
+      "group": "basicInfo",
+      "sharing": [ "ble" ]
+    },
+    "classAndLevel": {
+      "label": "Class & Level",
+      "dataType": "string",
+      "group": "basicInfo",
+      "sharing": [ "ble", "nfc" ]
+    },
+    "strength": {
+      "label": "Strength",
+      "shortLabel": "STR",
+      "dataType": "integer",
+      "constraints": { "min": 1, "max": 30 }
+    },
+    "strengthMod": {
+      "label": "Mod",
+      "shortLabel": "STRMOD",
+      "dataType": "integer",
+      "calculate": "local str = character.strength or 10; return math.floor((str - 10) / 2)",
+      "sharing": [ "ble" ]
+    },
+    "hitPoints": {
+      "label": "Hit Points",
+      "shortLabel": "HP",
+      "dataType": "integer",
+      "sharing": [ "ble", "nfc" ]
+    }
+  }
+}

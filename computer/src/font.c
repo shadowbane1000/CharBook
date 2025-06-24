@@ -171,6 +171,8 @@ void write_mode(const GFXfont *font,
                 int32_t *cursor_x,
                 int32_t *cursor_y,
                 uint8_t *framebuffer,
+                int16_t bufferWidth,
+                int16_t bufferHeight,
                 DrawMode_t mode,
                 const FontProperties *properties)
 {
@@ -205,8 +207,8 @@ void write_mode(const GFXfont *font,
     }
     else
     {
-        buf_width = EPD_WIDTH / 2;
-        buf_height = EPD_HEIGHT;
+        buf_width = bufferWidth / 2;
+        buf_height = bufferHeight;
         buffer = framebuffer;
         local_cursor_x = *cursor_x;
         local_cursor_y = *cursor_y;
@@ -217,7 +219,7 @@ void write_mode(const GFXfont *font,
     int32_t cursor_x_init = local_cursor_x;
     int32_t cursor_y_init = local_cursor_y;
 
-    uint8_t bg = props.bg_color;
+    uint8_t bg = props.bg_color << 4;
     if (props.flags & DRAW_BACKGROUND)
     {
         for (int32_t l = 0; l < font->advance_y; l++)
@@ -225,8 +227,8 @@ void write_mode(const GFXfont *font,
             epd_draw_hline(local_cursor_x,
                            local_cursor_y - (font->advance_y - baseline_height) + l,
                            w,
-                           bg << 4,
-                           buffer);
+                           bg,
+                           buffer, buf_width*2, buf_height);
         }
     }
     while ((c = next_cp((uint8_t **)&string)))
@@ -255,9 +257,13 @@ void writeln(const GFXfont *font,
              const char *string,
              int32_t *cursor_x,
              int32_t *cursor_y,
-             uint8_t *framebuffer)
+             uint8_t *framebuffer,
+             int16_t bufferWidth, 
+             int16_t bufferHeight,
+             const FontProperties *properties)
 {
-    return write_mode(font, string, cursor_x, cursor_y, framebuffer, BLACK_ON_WHITE, NULL);
+    return write_mode(font, string, cursor_x, cursor_y, framebuffer, 
+        bufferWidth, bufferHeight, BLACK_ON_WHITE, properties);
 }
 
 
@@ -265,7 +271,10 @@ void write_string(const GFXfont *font,
                   const char *string,
                   int32_t *cursor_x,
                   int32_t *cursor_y,
-                  uint8_t *framebuffer)
+                  uint8_t *framebuffer,
+                  int16_t bufferWidth, 
+                  int16_t bufferHeight,
+                  const FontProperties *properties)
 {
     char *token, *newstring, *tofree;
     if (string == NULL)
@@ -285,7 +294,7 @@ void write_string(const GFXfont *font,
     while ((token = strsep(&newstring, "\n")) != NULL)
     {
         *cursor_x = line_start;
-        writeln(font, token, cursor_x, cursor_y, framebuffer);
+        writeln(font, token, cursor_x, cursor_y, framebuffer, bufferWidth, bufferHeight, properties);
         *cursor_y += font->advance_y;
     }
     if(string[strlen(string)-1] == '\n'){
@@ -422,13 +431,16 @@ static void IRAM_ATTR draw_char(const GFXfont *font,
                 bm = bm >> 4;
             }
 
-            if ((xx & 1) == 0)
+            if (bm != 0 || !(props->flags & TRANSPARENT_BACKGROUND))
             {
-                buffer[buf_pos] = (old & 0xF0) | color_lut[bm];
-            }
-            else
-            {
-                buffer[buf_pos] = (old & 0x0F) | (color_lut[bm] << 4);
+                if ((xx & 1) == 0)
+                {
+                    buffer[buf_pos] = (old & 0xF0) | color_lut[bm];
+                }
+                else
+                {
+                    buffer[buf_pos] = (old & 0x0F) | (color_lut[bm] << 4);
+                }
             }
             byte_complete = !byte_complete;
             x++;

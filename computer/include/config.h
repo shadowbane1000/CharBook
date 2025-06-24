@@ -2,7 +2,6 @@
 #define __CONFIG_H__
 
 #include "module.h"
-#include "widgets/fixedsizewidget.h"
 
 class Config : public Module
 {
@@ -29,6 +28,6 @@ private:
   bool cardInserted;
 };
 
-extern Config Config;
+extern class Config Config;
 
 #endif // __CONFIG_H__

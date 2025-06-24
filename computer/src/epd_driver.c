@@ -87,7 +87,7 @@ static void IRAM_ATTR provide_out(OutputParams *params);
 static void IRAM_ATTR feed_display(OutputParams *params);
 
 static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t corners, int32_t delta,
-                            uint8_t color, uint8_t *framebuffer);
+                            uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height);
 
 /******************************************************************************/
 /***        exported variables                                              ***/
@@ -301,37 +301,37 @@ inline uint32_t min(uint32_t x, uint32_t y)
 }
 
 
-void epd_draw_hline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer)
+void epd_draw_hline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     for (int32_t i = 0; i < length; i++)
     {
         int32_t xx = x + i;
-        epd_draw_pixel(xx, y, color, framebuffer);
+        epd_draw_pixel(xx, y, color, framebuffer, width, height);
     }
 }
 
 
-void epd_draw_vline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer)
+void epd_draw_vline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     for (int32_t i = 0; i < length; i++)
     {
         int32_t yy = y + i;
-        epd_draw_pixel(x, yy, color, framebuffer);
+        epd_draw_pixel(x, yy, color, framebuffer, width, height);
     }
 }
 
 
-void epd_draw_pixel(int32_t x, int32_t y, uint8_t color, uint8_t *framebuffer)
+void epd_draw_pixel(int32_t x, int32_t y, uint8_t color, uint8_t *framebuffer,uint16_t width, uint16_t height)
 {
-    if (x < 0 || x >= EPD_WIDTH)
+    if (x < 0 || x >= width)
     {
         return;
     }
-    if (y < 0 || y >= EPD_HEIGHT)
+    if (y < 0 || y >= height)
     {
         return;
     }
-    uint8_t *buf_ptr = &framebuffer[y * EPD_WIDTH / 2 + x / 2];
+    uint8_t *buf_ptr = &framebuffer[(y * width + x)/2];
     if (x % 2)
     {
         *buf_ptr = (*buf_ptr & 0x0F) | (color & 0xF0);
@@ -343,7 +343,7 @@ void epd_draw_pixel(int32_t x, int32_t y, uint8_t color, uint8_t *framebuffer)
 }
 
 
-void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer)
+void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     int32_t f = 1 - r;
     int32_t ddF_x = 1;
@@ -351,10 +351,10 @@ void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *
     int32_t x = 0;
     int32_t y = r;
 
-    epd_draw_pixel(x0, y0 + r, color, framebuffer);
-    epd_draw_pixel(x0, y0 - r, color, framebuffer);
-    epd_draw_pixel(x0 + r, y0, color, framebuffer);
-    epd_draw_pixel(x0 - r, y0, color, framebuffer);
+    epd_draw_pixel(x0, y0 + r, color, framebuffer, width, height);
+    epd_draw_pixel(x0, y0 - r, color, framebuffer, width, height);
+    epd_draw_pixel(x0 + r, y0, color, framebuffer, width, height);
+    epd_draw_pixel(x0 - r, y0, color, framebuffer, width, height);
 
     while (x < y)
     {
@@ -368,27 +368,27 @@ void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *
         ddF_x += 2;
         f += ddF_x;
 
-        epd_draw_pixel(x0 + x, y0 + y, color, framebuffer);
-        epd_draw_pixel(x0 - x, y0 + y, color, framebuffer);
-        epd_draw_pixel(x0 + x, y0 - y, color, framebuffer);
-        epd_draw_pixel(x0 - x, y0 - y, color, framebuffer);
-        epd_draw_pixel(x0 + y, y0 + x, color, framebuffer);
-        epd_draw_pixel(x0 - y, y0 + x, color, framebuffer);
-        epd_draw_pixel(x0 + y, y0 - x, color, framebuffer);
-        epd_draw_pixel(x0 - y, y0 - x, color, framebuffer);
+        epd_draw_pixel(x0 + x, y0 + y, color, framebuffer, width, height);
+        epd_draw_pixel(x0 - x, y0 + y, color, framebuffer, width, height);
+        epd_draw_pixel(x0 + x, y0 - y, color, framebuffer, width, height);
+        epd_draw_pixel(x0 - x, y0 - y, color, framebuffer, width, height);
+        epd_draw_pixel(x0 + y, y0 + x, color, framebuffer, width, height);
+        epd_draw_pixel(x0 - y, y0 + x, color, framebuffer, width, height);
+        epd_draw_pixel(x0 + y, y0 - x, color, framebuffer, width, height);
+        epd_draw_pixel(x0 - y, y0 - x, color, framebuffer, width, height);
     }
 }
 
 
-void epd_fill_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer)
+void epd_fill_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
-    epd_draw_vline(x0, y0 - r, 2 * r + 1, color, framebuffer);
-    epd_fill_circle_helper(x0, y0, r, 3, 0, color, framebuffer);
+    epd_draw_vline(x0, y0 - r, 2 * r + 1, color, framebuffer, width, height);
+    epd_fill_circle_helper(x0, y0, r, 3, 0, color, framebuffer, width, height);
 }
 
 
 static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t corners, int32_t delta,
-                            uint8_t color, uint8_t *framebuffer)
+                            uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     int32_t f = 1 - r;
     int32_t ddF_x = 1;
@@ -416,16 +416,16 @@ static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t co
         if (x < (y + 1))
         {
             if (corners & 1)
-                epd_draw_vline(x0 + x, y0 - y, 2 * y + delta, color, framebuffer);
+                epd_draw_vline(x0 + x, y0 - y, 2 * y + delta, color, framebuffer, width, height);
             if (corners & 2)
-                epd_draw_vline(x0 - x, y0 - y, 2 * y + delta, color, framebuffer);
+                epd_draw_vline(x0 - x, y0 - y, 2 * y + delta, color, framebuffer, width, height);
         }
         if (y != py)
         {
             if (corners & 1)
-                epd_draw_vline(x0 + py, y0 - px, 2 * px + delta, color, framebuffer);
+                epd_draw_vline(x0 + py, y0 - px, 2 * px + delta, color, framebuffer, width, height);
             if (corners & 2)
-                epd_draw_vline(x0 - py, y0 - px, 2 * px + delta, color, framebuffer);
+                epd_draw_vline(x0 - py, y0 - px, 2 * px + delta, color, framebuffer, width, height);
             py = y;
         }
         px = x;
@@ -433,25 +433,25 @@ static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t co
 }
 
 
-void epd_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer)
+void epd_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
-    epd_draw_hline(x, y, w, color, framebuffer);
-    epd_draw_hline(x, y + h - 1, w, color, framebuffer);
-    epd_draw_vline(x, y, h, color, framebuffer);
-    epd_draw_vline(x + w - 1, y, h, color, framebuffer);
+    epd_draw_hline(x, y, w, color, framebuffer, width, height);
+    epd_draw_hline(x, y + h - 1, w, color, framebuffer, width, height);
+    epd_draw_vline(x, y, h, color, framebuffer, width, height);
+    epd_draw_vline(x + w - 1, y, h, color, framebuffer, width, height);
 }
 
 
-void epd_fill_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer)
+void epd_fill_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     for (int32_t i = x; i < x + w; i++)
     {
-        epd_draw_vline(i, y, h, color, framebuffer);
+        epd_draw_vline(i, y, h, color, framebuffer, width, height);
     }
 }
 
 
-void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer)
+void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     int32_t steep = abs(y1 - y0) > abs(x1 - x0);
     if (steep)
@@ -486,11 +486,11 @@ void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t colo
     {
         if (steep)
         {
-            epd_draw_pixel(y0, x0, color, framebuffer);
+            epd_draw_pixel(y0, x0, color, framebuffer, width, height);
         }
         else
         {
-            epd_draw_pixel(x0, y0, color, framebuffer);
+            epd_draw_pixel(x0, y0, color, framebuffer, width, height);
         }
         err -= dy;
         if (err < 0)
@@ -502,39 +502,39 @@ void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t colo
 }
 
 
-void epd_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer)
+void epd_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     // Update in subclasses if desired!
     if (x0 == x1)
     {
         if (y0 > y1)
             _swap_int(y0, y1);
-        epd_draw_vline(x0, y0, y1 - y0 + 1, color, framebuffer);
+        epd_draw_vline(x0, y0, y1 - y0 + 1, color, framebuffer, width, height);
     }
     else if (y0 == y1)
     {
         if (x0 > x1)
             _swap_int(x0, x1);
-        epd_draw_hline(x0, y0, x1 - x0 + 1, color, framebuffer);
+        epd_draw_hline(x0, y0, x1 - x0 + 1, color, framebuffer, width, height);
     }
     else
     {
-        epd_write_line(x0, y0, x1, y1, color, framebuffer);
+        epd_write_line(x0, y0, x1, y1, color, framebuffer, width, height);
     }
 }
 
 
 void epd_draw_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
-                       uint8_t color, uint8_t *framebuffer)
+                       uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
-    epd_draw_line(x0, y0, x1, y1, color, framebuffer);
-    epd_draw_line(x1, y1, x2, y2, color, framebuffer);
-    epd_draw_line(x2, y2, x0, y0, color, framebuffer);
+    epd_draw_line(x0, y0, x1, y1, color, framebuffer, width, height);
+    epd_draw_line(x1, y1, x2, y2, color, framebuffer, width, height);
+    epd_draw_line(x2, y2, x0, y0, color, framebuffer, width, height);
 }
 
 
 void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
-                       uint8_t color, uint8_t *framebuffer)
+                       uint8_t color, uint8_t *framebuffer, uint16_t width, uint16_t height)
 {
     int32_t a, b, y, last;
 
@@ -566,7 +566,7 @@ void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x
             a = x2;
         else if (x2 > b)
             b = x2;
-        epd_draw_hline(a, y0, b - a + 1, color, framebuffer);
+        epd_draw_hline(a, y0, b - a + 1, color, framebuffer, width, height);
         return;
     }
 
@@ -602,7 +602,7 @@ void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x
         */
         if (a > b)
             _swap_int(a, b);
-        epd_draw_hline(a, y, b - a + 1, color, framebuffer);
+        epd_draw_hline(a, y, b - a + 1, color, framebuffer, width, height);
     }
 
     // For lower part of triangle, find scanline crossings for segments
@@ -621,7 +621,7 @@ void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x
         */
         if (a > b)
             _swap_int(a, b);
-        epd_draw_hline(a, y, b - a + 1, color, framebuffer);
+        epd_draw_hline(a, y, b - a + 1, color, framebuffer, width, height);
     }
 }
 

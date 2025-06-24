@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "module.h"
-#include "widgets/fixedsizewidget.h"
 
 // maybe see munet package
 
@@ -44,6 +43,6 @@ private:
   bool checkedConfig;
 };
 
-extern Wireless Wireless;
+extern class Wireless Wireless;
 
 #endif // __WIRELESS_H__

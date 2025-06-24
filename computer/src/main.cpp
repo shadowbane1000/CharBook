@@ -1,26 +1,4 @@
 
-// requirements:
-//   boards
-//     esp32 by Espressif Systems must be v2.0.17
-//   tools
-//     ESP32S3 Dev Module
-//     USB CDC On Boot: Enabled
-//     Flash Size 16MB
-//     Partition Scheme: 16MB Flash (3MB App/9.9MB FATFS)
-//     PSRAM: "OPI PSRAM"
-//   libraries
-//     ArduinoJson at version 7.3.1 
-//     PNGdec at version 1.1.0 
-//     SdFat - Adafruit Fork at version 2.2.54 
-//     SPI at version 2.0.0 
-//     Arduino_ESP32_OTA at version 0.3.1 
-//     Arduino_DebugUtils at version 1.4.0 
-//     WiFiClientSecure at version 2.0.0 
-//     WiFi at version 2.0.0 
-//     ArduinoHttpClient at version 0.6.1 
-//     Wire at version 2.0.0 
-//     Update at version 2.0.0 
-
 #ifndef BOARD_HAS_PSRAM
 #error "Please enable PSRAM, Arduino IDE -> tools -> PSRAM -> OPI !!!"
 #endif
@@ -32,10 +10,9 @@
 #include "wireless.h"
 #include "batterymonitor.h"
 #include "nfc.h"
-#include "lua.h"
+#include "lua_env.h"
 #include "screen.h"
 #include "config.h"
-#include "charbookwebserver.h"
 #include "version.h"
 
 class Screen Screen;
@@ -45,8 +22,7 @@ class Wireless Wireless;
 class FileSystem FileSystem;
 class BatteryMonitor BatteryMonitor;
 class Nfc Nfc;
-class Lua Lua;
-class CharBookWebServer CharBookWebServer;
+class LuaEnv LuaEnv;
 
 extern "C"
 {
@@ -57,27 +33,37 @@ void debugprint(const char* string, uint32_t val)
 }
 void panic(const char* string){
   Serial.println(string);
-  Display.Clear(0xF);
-  Display.Flush();
-  Display.CursorX = 0;
-  Display.CursorY = 100;
-  Display.DrawText(string);
   Serial.flush();
-  FileSystem.Shutdown();
-  while(1) delay(10000);
+  //Display.ClearImmediate(0xF);
+  //Display.CursorX = 0;
+  //Display.CursorY = 100;
+  //Display.DrawTextImmediate(string);
+  //FileSystem.Shutdown();
+  while(1){
+    Serial.println(string);
+    Serial.flush();
+    delay(10000);
+  } 
+}
+void ps_free(void* ptr)
+{
+  free(ptr);
 }
 }
 
 void setup()
 {
   Serial.begin(115200);
-  Debug.setDebugLevel(DBG_VERBOSE);
+  //Debug.setDebugLevel(DBG_VERBOSE);
 
   Display.Initialize();
   Display.CursorX = 100;
   Display.CursorY = 100;
 
-  Display.DrawTextImmediate(VERSION);
+  Display.DrawTextImmediate("Version:" VERSION);
+  Display.CursorX = 100;
+  Display.CursorY = 140;
+  Display.DrawTextImmediate("Waiting for serial connection...");
   while(!Serial) delay(100);
 
   FileSystem.Initialize();
@@ -85,9 +71,9 @@ void setup()
   Wireless.Initialize();
   BatteryMonitor.Initialize();
   Nfc.Initialize();
-  Lua.Initialize();
+  LuaEnv.Initialize();
+  FileSystem.RegisterLua();
   Screen.Initialize();
-  CharBookWebServer.Initialize();
 }
 
 void loop()
@@ -97,9 +83,12 @@ void loop()
   Wireless.Update();
   BatteryMonitor.Update();
   Nfc.Update();
-//  WebServer.Update();
 
   Screen.Update();
   Display.Update();
+//  static int i = 0;
+//  if(i++ % 1000 == 0) {
+//    Serial.printf("Update took %dms\r\n", millis() - t1);
+//  }
 }
 

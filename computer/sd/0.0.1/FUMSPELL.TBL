@@ -1,0 +1,37 @@
+{
+  "Name": "Offensive Spell Fumble Table",
+  "TotalWeight": 92,
+  "Table":
+  [
+    { "Weight": 5, "Description": "Arcane Stumble. The magical energies momentarily trip you. Make a DC 10 DEX Save or fall prone. The spell fails." },
+    { "Weight": 4, "Description": "Mental Strain. The effort is taxing. Make a DC 10 CON save or suffer disadvantage on concentration checks for 1 minute. The spell fails." },
+    { "Weight": 1, "Description": "Energy Dims. Your spell's power is halved (half damage, half duration of any secondary effects, etc.) for this casting, even if it hits." },
+    { "Weight": 5, "Description": "Minor Backlash. A surge of uncontrolled energy zaps you. You take 1d6 force damage. The spell fails." },
+    { "Weight": 4, "Description": "Magical Exhaustion. You become exhausted to level 1 of that condition. The spell fails." },
+    { "Weight": 1, "Description": "Focus Shattered. You lose concentration on any active spell you are maintaining. The current spell fails." },
+    { "Weight": 4, "Description": "Mental Block. You are stunned for 1 round as your mind recoils. The spell fails." },
+    { "Weight": 4, "Description": "Arcane Opening. Your target’s allies within 30 feet who witness the fumble gain a d6 inspiration die. The spell fails." },
+    { "Weight": 1, "Description": "Weave Instability. You must make a successful DC 10 WIS Save or become frightened of using magic for 1d4 rounds (cannot cast spells). The current spell fails." },
+    { "Weight": 4, "Description": "Fumbled Component/Focus. You drop your spellcasting focus or a crucial material component. It lands 10’ away in a random direction. If the spell had a costly component, it is consumed. The spell fails." },
+    { "Weight": 4, "Description": "Sensory Overload. You become incapacitated for 1 round. The spell fails." },
+    { "Weight": 1, "Description": "Power Surge (Minor). A small, uncontrolled burst of energy erupts. You and all creatures within 5 feet of you take 1d4 thunder damage. The spell fails." },
+    { "Weight": 4, "Description": "Distorted Weave. You drop to last in the initiative order for the combat but do not act again this turn. The spell fails." },
+    { "Weight": 4, "Description": "Arcane Burn. Your casting hand is burned by magical feedback. You suffer disadvantage on attack rolls with spells for the rest of the encounter and take 1d4 fire damage each round until you spend an action to tend to it (DC 10 Medicine check). The spell fails." },
+    { "Weight": 1, "Description": "Target of Opportunity. All enemies within 60' who can see you and have a ranged attack or spell prepared will target you with their next action, if possible. The spell fails." },
+    { "Weight": 4, "Description": "Unraveling Magic. Your target may use its reaction to gain advantage on its next saving throw against a spell you cast. The current spell fails." },
+    { "Weight": 4, "Description": "Feedback Loop. You suffer the effects of a bane spell for the remainder of the encounter, affecting your spell attacks and saves. The spell fails." },
+    { "Weight": 1, "Description": "Wild Surge! Your spell targets a random creature (friend or foe, excluding yourself) within 30 feet of your original target. If no other creature is in range, it targets you. Make a new attack roll against the new target." },
+    { "Weight": 4, "Description": "Lingering Instability. Your target (if the spell somehow still has an effect, or your intended target if it completely failed) gains temporary hit points equal to your spellcasting ability modifier. The spell fails." },
+    { "Weight": 4, "Description": "Misdirected Energy. You and your allies all suffer disadvantage for your next attack roll or spell saving throw DC. The spell fails." },
+    { "Weight": 1, "Description": "Wrong Target. Your spell veers off course! You mistakenly make an attack roll against an ally within 15 feet of your original target (or the ally closest to the path of the spell, DM's choice)." },
+    { "Weight": 4, "Description": "Spell Fizzle. The spell slot is consumed, but the spell has no effect whatsoever. If it had a costly material component, it is also consumed." },
+    { "Weight": 4, "Description": "Devastating Backfire. As a free action, your opponent may immediately make one attack with advantage against you as a reaction, or if they have a spell, cast a cantrip targeting you. The spell fails." },
+    { "Weight": 1, "Description": "Focus Overload. Your non-magical spellcasting focus shatters or is rendered inert. If it's a magical focus, it must make a DC 10 save or be suppressed for 1d4 hours. The spell fails." },
+    { "Weight": 4, "Description": "Uncontrolled Surge. The spell erupts prematurely, centered on you. It affects you as if you were the target (if single target) or you are in the center of its area of effect (if AoE, even if it's a to-hit spell that normally doesn't have AoE on a miss, imagine it exploding). The spell slot is consumed." },
+    { "Weight": 4, "Description": "Arcane Amnesia. You immediately suffer the effects of the Confusion spell for 1 round. The spell fails." },
+    { "Weight": 1, "Description": "Catastrophic Failure. Roll twice on this chart and apply both effects to yourself. If one effect negates the spell, the second still applies." },
+    { "Weight": 4, "Description": "Magical Feedback. Your spell's energy lashes back at you. Roll your spell's damage as if you had hit your target and apply it to yourself. The spell slot is consumed." },
+    { "Weight": 4, "Description": "Severe Magical Feedback. Your spell's energy lashes back. Apply the maximum damage to yourself as if you had hit your target. The spell slot is consumed." },
+    { "Weight": 1, "Description": "Resonant Backlash! Your spell's energy critically backfires. Apply the maximum critical damage to yourself as if you had critically hit your target. The spell slot is consumed." }
+  ]
+}

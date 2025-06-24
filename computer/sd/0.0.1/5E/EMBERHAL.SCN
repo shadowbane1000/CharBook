@@ -1,0 +1,71 @@
+{
+  "template": "Standard",
+  "tileholder": {
+    "tiles": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 3,
+        "type": "image",
+        "icon": "EMBERHAL.png"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 3,
+        "type": "subscreen",
+        "screen": "FUMBLE",
+        "icon": "FUMBLE.PNG",
+        "bc_text": "Fumble"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 3,
+        "type": "number",
+        "icon": "RIBBON.PNG",
+        "bc_text": "Initiative",
+        "value": 12,
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 3,
+        "bc_text": "HP",
+        "type": "number",
+        "icon": "HP.png",
+        "min": 0,
+        "max": 27,
+        "value": 27,
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "bc_text": "AC",
+        "type": "number",
+        "icon": "AC.png",
+        "value": 18,
+        "shareReadMode": "All",
+        "shareWriteMode": "GMOnly"
+      },
+      {
+        "bc_text": "Roll Initiative",
+        "type": "action",
+        "icon": "ROLL.png",
+        "script": "card.Initiative.value = roll('1d20+2')"
+      },
+      {
+        "bc_text": "Long Rest",
+        "type": "action",
+        "icon": "ZZZ.png",
+        "script": "card.HP.value = card.HP.max"
+      }
+    ]
+  }
+}

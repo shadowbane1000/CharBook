@@ -1,0 +1,22 @@
+{
+  "image": "EMBERHAL.png",
+  "shortname": "Fenril",
+  "name": "Fenril Emberhollow",
+  "level": 3,
+  "class": "Peace Cleric",
+  "hp": {
+    "max": 21,
+    "current": 20,
+    "temporary": 0,
+    "maxAdjustment": 0
+  },
+  "ac": {
+    "current": 18,
+    "temporary": 0
+  },
+  "initiative": {
+    "current": 0,
+    "dice": "1d20"
+  }
+}
+
