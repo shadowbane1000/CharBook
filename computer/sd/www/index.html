@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CharBook Config</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .accordion { cursor: pointer; padding: 10px; width: 100%; text-align: left; border: none; outline: none; transition: 0.4s; }
+    .panel { display: none; padding: 10px; }
+    .active, .accordion:hover { background-color: #ccc; }
+    .dialog {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <h2>CharBook Config</h2>
+  
+  <button class="accordion">Known WiFi Networks</button>
+  <div class="panel">
+    <ul id="wifi-list"></ul>
+  </div>
+
+  <button class="accordion">Scanned WiFi Networks</button>
+  <div class="panel">
+    <ul id="wifi-scan"></ul>
+    <button onclick="refreshWifi()">Refresh Networks</button>
+  </div>
+
+  <button class="accordion">System Controls</button>
+  <div class="panel">
+    <button onclick="resetMain()">Reset to Main Screen</button>
+    <button onclick="confirmFactoryReset()">Reset to Factory Defaults</button>
+  </div>
+
+  <button class="accordion">OTA Updates</button>
+  <div class="panel">
+    <label>Server: <input type="text" id="ota-server"></label>
+    <label>Path: <input type="text" id="ota-path"></label>
+    <button onclick="saveOtaSettings()">Save</button>
+  </div>
+  
+  <div id="wifi-dialog" class="dialog">
+    <h3>Configure WiFi</h3>
+    <label>SSID: <span id="wifi-ssid"></span></label>
+    <input type='text' id='wifi-pass'>
+    <br>
+    <button onclick='saveWifi()'>Save</button>
+    <button onclick='closeDialog()'>Cancel</button>
+  </div>
+<!--
+  <button class="accordion">Gaming Systems</button>
+  <div class="panel">
+    <ul id="system-list"></ul>
+    <input type="text" id="new-system" placeholder="New System Name">
+    <button onclick="createSystem()">Create</button>
+  </div>
+
+  <button class="accordion">Tables</button>
+  <div class="panel">
+    <ul id="table-list"></ul>
+    <input type="text" id="new-table" placeholder="New Table Name">
+    <button onclick="createTable()">Create</button>
+  </div>
+
+  <button class="accordion">Characters</button>
+  <div class="panel">
+    <ul id="character-list"></ul>
+    <input type="text" id="new-character" placeholder="New Character Name">
+    <button onclick="createCharacter()">Create</button>
+  </div>
+-->
+  <script>
+    let config = { WiFi: {}, Ota: {} };
+
+    document.querySelectorAll('.accordion').forEach(acc => {
+      acc.addEventListener('click', function () {
+        this.classList.toggle('active');
+        let panel = this.nextElementSibling;
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      loadConfig();
+    });
+
+    function loadConfig() {
+      fetch('/download?path=/CURRENT.CFG')
+        .then(response => response.json())
+        .then(data => {
+          config = data;
+          console.log('Config Loaded:', config);
+          
+          document.getElementById('ota-server').value = config.Ota?.Server || '';
+          document.getElementById('ota-path').value = config.Ota?.Path || '';
+          console.log("Looping ssids");
+          let list = document.getElementById('wifi-list');
+          list.innerHTML = '';
+          for (const [ssid,pass] of Object.entries(config.Wifi)) {
+            console.log("SSID: ",ssid);
+            let li = document.createElement('li');
+            li.innerText = ssid;
+            let btn = document.createElement('button');
+            btn.innerText = 'Forget';
+            btn.onclick = () => forgetWifi(ssid);
+            li.appendChild(btn);
+            list.appendChild(li);
+          }
+        })
+        .catch(error => console.error('Error loading config:', error));
+    }
+
+    function refreshWifi() {
+      fetch('/WIFI').then(res => res.json()).then(data => {
+        let list = document.getElementById('wifi-scan');
+        list.innerHTML = '';
+        data.forEach(net => {
+          let li = document.createElement('li');
+          li.innerText = net;
+          li.onclick = () => configureWifi(net);
+          list.appendChild(li);
+        });
+      });
+    }
+
+    function configureWifi(ssid) {
+      currentSSID = ssid;
+      document.getElementById('wifi-ssid').innerText = ssid;
+      document.getElementById('wifi-dialog').style.display = 'block';
+    }
+    function closeDialog() {
+      document.getElementById('wifi-dialog').style.display = 'none';
+    }
+    function saveWifi(ssid) {
+      let pass = document.getElementById('wifi-pass').value;
+      config.Wifi[currentSSID] = pass;
+      uploadConfig();
+      
+      // Add the new network to the displayed list
+      let list = document.getElementById('wifi-list');
+      let li = document.createElement('li');
+      li.innerText = currentSSID;
+      let btn = document.createElement('button');
+      btn.innerText = 'Forget';
+      btn.onclick = () => forgetWifi(currentSSID);
+      li.appendChild(btn);
+      list.appendChild(li);
+      
+      // Reset and close the dialog
+      document.getElementById('wifi-pass').value = '';
+      closeDialog();
+    }
+
+    function forgetWifi(ssid) {
+      console.log("forgetting ",ssid);
+      delete config.Wifi[ssid];
+      uploadConfig();
+      
+      // Remove the item from the displayed list
+      const list = document.getElementById('wifi-list');
+      for (const li of list.children) {
+        if (li.innerText.startsWith(ssid)) {
+          list.removeChild(li);
+          break;
+        }
+      }
+    }
+
+    function resetMain() {
+      fetch('/RESET_MAIN', { method: 'POST' });
+    }
+
+    function confirmFactoryReset() {
+      if (confirm('Are you sure you want to reset to factory defaults?')) {
+        fetch('/RESET_FACTORY', { method: 'POST' });
+      }
+    }
+
+    function saveOtaSettings() {
+      let server = document.getElementById('ota-server').value;
+      let path = document.getElementById('ota-path').value;
+      config.Ota = { Server: server, Path: path };
+      uploadConfig();
+    }
+
+    function uploadConfig() {
+      let formData = new FormData();
+      let blob = new Blob([JSON.stringify(config)], { type: 'application/json' });
+      formData.append('file', blob, 'CURRENT.CFG');
+      fetch('/upload', { method: 'POST', body: formData });
+    }
+
+    function createSystem() {
+      let name = document.getElementById('new-system').value;
+      fetch('/CREATE_SYSTEM', { method: 'POST', body: JSON.stringify({ name }) });
+    }
+
+    function createCharacter() {
+      let name = document.getElementById('new-character').value;
+      fetch('/CREATE_CHARACTER', { method: 'POST', body: JSON.stringify({ name }) });
+    }
+    
+  </script>
+</body>
+</html>
